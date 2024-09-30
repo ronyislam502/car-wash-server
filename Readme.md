@@ -1,41 +1,59 @@
-# **Instruction**
+# Car Wash Booking System
 
-**Step - 1:** Create an `eslint.config.mjs` and copy the code from: 
-<br> 
-[Eslint File](https://github.com/ShafiaChy/Eslint-Config-Setup/blob/main/eslint.config.mjs)
-<br>
+### Live URL: https://assignment-3-drab-omega.vercel.app/
 
-*Delete the files `eslintrc` and `.eslintignore`*
+### Technology used
 
-**Step - 2:** Copy/paste the following lines and paste inside `script` in `package.json` code from given in the package.json
-```
+- Typescript
+- NodeJS
+- ExpressJS
+- Mongoose
+- Jsonwebtoken
+- Bcrypt
+- Zod
 
-    "lint": "npx eslint src --ignore-pattern .ts",
-    "lint:fix": "npx eslint src --fix",
-    "prettier": "prettier --ignore-path .gitignore --write \"./src/**/*.+(js|ts|json)\"",
-    "prettier:fix": "npx prettier --write src",
+### Features
 
-```
+- User Management
+- Role-Based Access Control
+- Service Management
+- Slot Management
+- Booking System
+- Slot Availability
+- Data Validation and Error Handling
+- Security - (Access Token Security, Error Handling)
 
-<br>
+## Instructions on how to run this application locally
 
-**Step - 3:** Install the `prettier` package
-
-```
-    npm install --save-dev prettier
-```
-
-<br>
-
-<br>
-
-*If prettier does not work*, follow step 4:
-
-**Step - 4:** Add the code below to the `settings.json` file:
+1. First clone this repository on your device with this command line:
 
 ```
-      "editor.defaultFormatter": "esbenp.prettier-vscode",
-      "editor.formatOnSave": true,
+git clone https://github.com/shiningsudipto/level-2-assignment-3
 ```
 
-<br>
+2. After cloning the repository install all necessary packages with:
+
+```
+npm install
+```
+
+3. Now set the necessary variables, create a '.env' file in the root folder of this project and set the value of those properties:
+
+- NODE_ENV
+- PORT
+- DATABASE_URL
+- DATABASE_URL
+- JWT_ACCESS_SECRET
+- JWT_ACCESS_EXPIRES_IN
+- BCRYPT_SALT_ROUNDS
+
+4. After successfully installing all packages open the terminal from this project and run:
+
+```
+npm run start:dev
+```
+
+5. Check the console/terminal is there a message:
+   > mongoDB connected
+
+### If yes then locally application successfully running.

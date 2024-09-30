@@ -1,119 +1,122 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { serviceServices } from "./service.service";
-
-import { Service } from "./service.model";
-import { handleNoDataResponse } from "../../errors/handleNoData";
-import catchAsync from "../../utilities/catchAsync";
-import sendResponse from "../../utilities/sendResponse";
-import httpStatus from "http-status";
+import { serviceServices } from './service.service'
+import catchAsync from '../../utils/catchAsync'
+import sendResponse from '../../utils/sendResponse'
+import httpStatus from 'http-status'
+import { Service } from './service.model'
+import { handleNoDataResponse } from '../../errors/handleNoData'
 
 const createService = catchAsync(async (req, res) => {
-  const ServiceData = req.body;
-  const result = await serviceServices.createServiceIntoDb(ServiceData);
-
+  const ServiceData = req.body
+  const result = await serviceServices.createServiceIntoDb(ServiceData)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Service created successfully",
+    message: 'Service created successfully',
     data: result,
-  });
-});
+  })
+})
 
 const getSingleService = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const result = await serviceServices.getSingleServiceFromDB(id);
+  const { id } = req.params
+  const result = await serviceServices.getSingleServiceFromDB(id)
   if (!result) {
-    return handleNoDataResponse(res);
+    return handleNoDataResponse(res)
   }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Service retrieved successfully",
+    message: 'Service retrieved successfully',
     data: result,
-  });
-});
+  })
+})
 const getSingleServiceDetails = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const result = await serviceServices.getSingleServiceDetailsFromDB(id);
+  const { id } = req.params
+  const result = await serviceServices.getSingleServiceDetailsFromDB(id)
   if (!result) {
-    return handleNoDataResponse(res);
+    return handleNoDataResponse(res)
   }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Service retrieved successfully",
+    message: 'Service retrieved successfully',
     data: result,
-  });
-});
+  })
+})
 
 const getAllServices = catchAsync(async (req, res) => {
-  const { search, sortOrder = "asc", minDuration, maxDuration } = req.query;
+  const { search, sortOrder = 'asc', minDuration, maxDuration } = req.query
+
+  // const result = await Service.aggregate([{ $match: { isDeleted: false } }])
 
   // Build the query
-  const query: any = { isDeleted: false };
+  const query: any = { isDeleted: false }
 
+  // Check if search parameter is provided
   if (search) {
-    const searchTerm = search.toString();
+    const searchTerm = search.toString()
     query.$or = [
-      { name: { $regex: searchTerm, $options: "i" } },
-      { description: { $regex: searchTerm, $options: "i" } },
-    ];
+      { name: { $regex: searchTerm, $options: 'i' } },
+      { description: { $regex: searchTerm, $options: 'i' } },
+    ]
   }
-
+  // Apply duration filter if present
   if (minDuration) {
-    query.duration = { ...query.duration, $gte: Number(minDuration) };
+    query.duration = { ...query.duration, $gte: Number(minDuration) }
   }
   if (maxDuration) {
-    query.duration = { ...query.duration, $lte: Number(maxDuration) };
+    query.duration = { ...query.duration, $lte: Number(maxDuration) }
+  }
+  // Define the sort object
+  const sort: any = {}
+  if (sortOrder === 'asc') {
+    sort.price = 1
+  } else if (sortOrder === 'desc') {
+    sort.price = -1
   }
 
-  const sort: any = {};
-  if (sortOrder === "asc") {
-    sort.price = 1;
-  } else if (sortOrder === "desc") {
-    sort.price = -1;
-  }
-
-  const result = await Service.find(query).sort(sort);
+  // Fetch the filtered and searched services
+  // const result = await Service.find(query).sort(sort)
+  const result = await Service.find(query).sort(sort)
 
   if (result.length === 0) {
-    return handleNoDataResponse(res);
+    return handleNoDataResponse(res)
   }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Service retrieved successfully",
+    message: 'Services retrieved successfully',
     data: result,
-  });
-});
+  })
+})
 
 const updateService = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const service = req.body;
-  const result = await serviceServices.updateServiceIntoDB(id, service);
+  const { id } = req.params
+  const service = req.body
+  const result = await serviceServices.updateServiceIntoDB(id, service)
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Service updated successfully",
+    message: 'Service updated successfully',
     data: result,
-  });
-});
+  })
+})
 
 const deleteService = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const result = await serviceServices.deleteServiceFromDB(id);
+  const { id } = req.params
+  const result = await serviceServices.deleteServiceFromDB(id)
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Service deleted successfully",
+    message: 'Service deleted successfully',
     data: result,
-  });
-});
+  })
+})
 
 export const serviceControllers = {
   createService,
@@ -122,4 +125,4 @@ export const serviceControllers = {
   getAllServices,
   updateService,
   deleteService,
-};
+}

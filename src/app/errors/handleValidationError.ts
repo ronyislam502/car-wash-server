@@ -1,24 +1,25 @@
-import mongoose from "mongoose";
-import { TErrorSources, TGenericErrorResponse } from "../interface/error";
+import mongoose from 'mongoose'
+import { TErrorSources, TGenericErrorResponse } from '../interface/error'
 
 const handleValidationError = (
-  error: mongoose.Error.ValidationError
+  err: mongoose.Error.ValidationError,
 ): TGenericErrorResponse => {
-  const errorSources: TErrorSources = Object.values(error.errors).map(
-    (value: mongoose.Error.ValidatorError | mongoose.Error.CastError) => {
+  const errorSources: TErrorSources = Object.values(err.errors).map(
+    (val: mongoose.Error.ValidatorError | mongoose.Error.CastError) => {
       return {
-        path: value?.path,
-        message: value?.message,
-      };
-    }
-  );
+        path: val?.path,
+        message: val?.message,
+      }
+    },
+  )
 
-  const statusCode = 400;
+  const statusCode = 400
+
   return {
     statusCode,
-    message: "Validation Error",
+    message: 'Validation Error',
     errorSources,
-  };
-};
+  }
+}
 
-export default handleValidationError;
+export default handleValidationError

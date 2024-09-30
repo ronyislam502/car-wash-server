@@ -1,63 +1,59 @@
-import { slotServices } from "./slot.service";
-import { handleNoDataResponse } from "../../errors/handleNoData";
-import catchAsync from "../../utilities/catchAsync";
-import sendResponse from "../../utilities/sendResponse";
-import httpStatus from "http-status";
+import httpStatus from 'http-status'
+import catchAsync from '../../utils/catchAsync'
+import sendResponse from '../../utils/sendResponse'
+import { slotServices } from './slot.service'
+import { handleNoDataResponse } from '../../errors/handleNoData'
 
 const createSlot = catchAsync(async (req, res) => {
-  const slotData = req.body;
-  const result = await slotServices.createSlotIntoDB(slotData);
-
+  const slotData = req.body
+  const result = await slotServices.createSlotIntoDB(slotData)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Slot created successfully!",
+    message: 'Slot created successfully!',
     data: result,
-  });
-});
+  })
+})
 const getAvailableSlots = catchAsync(async (req, res) => {
-  const result = await slotServices.getAllAvailableSlotsFromDB();
+  const result = await slotServices.getAllAvailableSlotsFromDB()
   if (result?.length === 0) {
-    return handleNoDataResponse(res);
+    return handleNoDataResponse(res)
   }
-
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Slot available retrieved successfully!",
+    message: 'Available slots retrieved successfully',
     data: result,
-  });
-});
+  })
+})
 const getAllSlots = catchAsync(async (req, res) => {
-  const result = await slotServices.getAllSlotsFromDB();
+  const result = await slotServices.getAllSlotsFromDB()
   if (result?.length === 0) {
-    return handleNoDataResponse(res);
+    return handleNoDataResponse(res)
   }
-
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Slot  retrieved successfully!",
+    message: 'Available slots retrieved successfully',
     data: result,
-  });
-});
+  })
+})
 
 const updateSlot = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const payload = req.body;
-  const result = await slotServices.updateSlotIntoDB(id, payload);
-
+  const { id } = req.params
+  const payload = req.body
+  const result = await slotServices.updateSlotIntoDB(id, payload)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Slot updated successfully!",
+    message: 'Slot updated successfully',
     data: result,
-  });
-});
+  })
+})
 
-export const slotControllers = {
+export const slotController = {
   createSlot,
   getAvailableSlots,
   updateSlot,
   getAllSlots,
-};
+}

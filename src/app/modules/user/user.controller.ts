@@ -1,74 +1,73 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { userServices } from "./user.service";
-import httpStatus from "http-status";
-
-import { handleNoDataResponse } from "../../errors/handleNoData";
-import { User } from "./user.model";
-import catchAsync from "../../utilities/catchAsync";
-import sendResponse from "../../utilities/sendResponse";
-import { getUserInfoFromToken } from "../../utilities/getUserInfoFromToken";
+import { userServices } from './user.service'
+import catchAsync from '../../utils/catchAsync'
+import sendResponse from '../../utils/sendResponse'
+import httpStatus from 'http-status'
+import { getUserInfoFromToken } from '../../utils/getUserInfoFromToken'
+import { handleNoDataResponse } from '../../errors/handleNoData'
+import { User } from './user.model'
 
 const createUser = catchAsync(async (req, res) => {
-  const userData = req.body;
-  const result = await userServices.createUserIntoDb(userData);
+  const userData = req.body
+  const result = await userServices.createUserIntoDb(userData)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User registered successfully",
+    message: 'User registered successfully',
     data: result,
-  });
-});
+  })
+})
 
 const getAllUser = catchAsync(async (req, res) => {
-  const result = await User.find();
+  const result = await User.find()
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User retrieved successfully",
+    message: 'User retrieved successfully',
     data: result,
-  });
-});
+  })
+})
 const getUserByEmail = catchAsync(async (req, res) => {
-  const token = req.headers.authorization;
-  const { email } = getUserInfoFromToken(token as string);
-  const result = await userServices.getUserFromDB(email);
+  const token = req.headers.authorization
+  const { email } = getUserInfoFromToken(token as string)
+  const result = await userServices.getUserFromDB(email)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User retrieved successfully",
+    message: 'User retrieved successfully',
     data: result,
-  });
-});
+  })
+})
 
 const updateUser = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const payload = req.body;
-  const result = await userServices.updateUserIntoDB(id, payload);
+  const { id } = req.params
+  const payload = req.body
+  const result = await userServices.updateUserIntoDB(id, payload)
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User updated successfully",
+    message: 'User updated successfully',
     data: result,
-  });
-});
+  })
+})
 
 const getMyBookings = catchAsync(async (req, res) => {
-  const token = req.headers.authorization;
-  const { email } = getUserInfoFromToken(token as string);
+  const token = req.headers.authorization
+  const { email } = getUserInfoFromToken(token as string)
 
-  const result = await userServices.getMyBookingsFromDb(email);
+  const result = await userServices.getMyBookingsFromDb(email)
 
   if (!result || result?.length === 0) {
-    return handleNoDataResponse(res);
+    return handleNoDataResponse(res)
   }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User bookings retrieved successfully",
+    message: 'User bookings retrieved successfully',
     data: result,
-  });
-});
+  })
+})
 
 export const userControllers = {
   createUser,
@@ -76,4 +75,4 @@ export const userControllers = {
   getAllUser,
   getUserByEmail,
   updateUser,
-};
+}
