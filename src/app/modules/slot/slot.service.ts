@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-// src/modules/slot/slot.service.ts
 import { Types } from "mongoose";
 import { Slot } from "./slot.model";
 import { TSlot } from "./slot.interface";
-import { generateSlots } from "./slot.utils";
+
 import { Service } from "../service/service.model";
+import { generateSlots } from "./slot.utilities";
 
 interface SlotData {
   service: string;
